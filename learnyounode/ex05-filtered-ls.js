@@ -20,14 +20,6 @@
 // use async i/o - input/output
 // one line per [filtered] file
 
-// use regex?
-
-// var directoryPath,
-// 	fileExtension;
-
-// function printFilteredFiles(directoryPath, fileExtension) {
-// }
-
 var fs,
 	pathToProcess,
 	fileExtension,
@@ -39,11 +31,6 @@ fs = require('fs');
 pathToProcess = process.argv[2];
 fileExtension = process.argv[3];
 regularExpressionPattern = new RegExp('^[^.]*\.' + fileExtension, 'g');
-//regularExpressionPattern = new RegExp('.*', 'g');
-
-// console.log('pathToProcess is ' + pathToProcess);
-console.log('fileExtension is ' + fileExtension);
-console.log('regularExpressionPattern is ' + regularExpressionPattern);
 
 function filterFiles(directoryFiles, fileExtension) {
 	fs.readdir(directoryFiles, function (err, list) {
@@ -51,14 +38,13 @@ function filterFiles(directoryFiles, fileExtension) {
 			console.log(err);
 			return err;
 		} else {
-			console.log(list);
 			filteredList = list.filter(function evaluateExtension(item) {
-				console.log('regex test on item ' + item + ' is: ' + regularExpressionPattern.test(item));
 				return regularExpressionPattern.test(item);
-			})
-			return filteredList;
+			});
+			filteredList.forEach(function printFile(file) {
+				console.log(file);
+			});
 		}
-
 	});
 }
 
