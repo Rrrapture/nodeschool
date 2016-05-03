@@ -21,42 +21,29 @@
 // one line per [filtered] file
 
 var fs,
-	pathToProcess,
-	fileExtension,
-	regularExpressionPattern,
-	item,
-	filteredList;
+    pathToProcess,
+    fileExtension,
+    regularExpressionPattern;
 
 fs = require('fs');
 pathToProcess = process.argv[2];
 fileExtension = process.argv[3];
-regularExpressionPattern = new RegExp('^[a-zA-Z]*\.' + fileExtension, 'g');
+regularExpressionPattern = new RegExp('^[^.]*\.' + fileExtension);
 
-function filterFiles(directoryFiles, fileExtension) {
-	fs.readdir(directoryFiles, function (err, list) {
-		if(err) {
-			console.log(err);
-			return err;
-		} else {
-			console.log(list);
-			filteredList = list.filter(function evaluateExtension(item) {
-				console.log('item is ' + item + ' and evaluates to: ' + regularExpressionPattern.test(item));
-				return regularExpressionPattern.test(item);
-			});
+fs.readdir(pathToProcess, function (err, list) {
+    'use strict';
+    if (err) {
+        console.log(err);
+        return err;
+    }
+    list.filter(function evaluateMatch(item) {
+        return regularExpressionPattern.test(item);
+    })
+        .map(function logEachPositive(item) {
+            console.log(item);
+        });
 
-			console.log(filteredList);
-			//TODO: MAKE ASYNC SO FILTEREDLIST FOR EACH RUNS AFTER ABOVE ARRAY IS CREATED
+});
 
-			filteredList.forEach(function printFile(file) {
-				console.log(file);
-			});
-
-
-
-		}
-	});
-}
-
-filterFiles(pathToProcess);
 
 
