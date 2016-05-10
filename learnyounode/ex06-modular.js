@@ -1,6 +1,15 @@
-// use a module to read and filter
+// exercise 6 - use a module to read and filter
+var readFilter = require('./ex06-module-read-filter.js');
 
-var readFilter = require('./readFilter');// the 'js' extension is optional here and you'll see it omitted frequently
+var pathToProcess = process.argv[2];
+var fileExtension = process.argv[3];
 
-console.log(readFilter);
-// readFilter('monkeys');
+// https://github.com/felixge/node-style-guide#name-your-closures
+readFilter(pathToProcess, fileExtension, function logFiles(err, list) {
+    if(err) {
+        throw err;
+    }
+    list.map(function (item) {
+        console.log(item);
+    });
+});

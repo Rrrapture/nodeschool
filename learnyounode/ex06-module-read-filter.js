@@ -1,32 +1,26 @@
 // directory reading and filtering module
-
-
-module.exports = function readFilter(args) {
+function readFilter(pathToProcess, fileExtension, callback) {
 
     var fs;
-    var pathToProcess;
-    var fileExtension;
     var regularExpressionPattern;
+    var fileList;
 
     fs = require('fs');
-    pathToProcess = process.argv[2];
-    fileExtension = process.argv[3];
     regularExpressionPattern = new RegExp('^[^.]*\.' + fileExtension);
 
-    fs.readdir(pathToProcess, function (err, list) {
+    // https://github.com/felixge/node-style-guide#name-your-closures
+    fs.readdir(pathToProcess, function reviewFiles(err, list) {
         'use strict';
         if (err) {
-            console.log(err);
-            return err;
+            return callback(err);
         }
-        list.filter(function evaluateMatch(item) {
-            return regularExpressionPattern.test(item);
-        })
-            .map(function logEachPositive(item) {
-                console.log(item);
-            });
-    });
 
-    // some brilliant code here
-    console.log('My brilliant module with ' + args);
+        fileList = list.filter(function evaluateMatch(item) {
+            return regularExpressionPattern.test(item);
+        });
+
+        return callback(null, fileList);
+    });
 }
+
+module.exports = readFilter;
