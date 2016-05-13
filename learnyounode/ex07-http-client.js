@@ -30,10 +30,6 @@ http
     .get(url, function getRequest(res) {
         res
             .setEncoding('utf8')
-            .on('data', function explainData(data) {
-                console.log(data);
-            });
-    })
-    .on('error', function detailError(error) {
-        console.log('Got error: ' + error);
+            .on('data', console.log)
+            .on('error', console.error);
     });
