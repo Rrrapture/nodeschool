@@ -16,13 +16,23 @@ var http,
     url;
 
 // http.get(options[, callback])
-
+// the res or response object is a Node stream object.
+// Node stream objects emit events
+// important events are 'data', 'error', and 'end'
+// you listen to a Node [stream?] object like this:
+// response.on('data', function (data) { /* */ });
+// setEncoding method for response object - utf8 -
+// will emit string instead of buffer
 http = require('http');
 url = process.argv[2];
 
 http
     .get(url, function getRequest(res) {
-        console.log('Got response: ' + res.statusCode);
+        res
+            .setEncoding('utf8')
+            .on('data', function explainData(data) {
+                console.log(data);
+            });
     })
     .on('error', function detailError(error) {
         console.log('Got error: ' + error);
