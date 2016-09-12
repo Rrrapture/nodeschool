@@ -7,6 +7,9 @@
 	console.log('a third time ' + a);
 	a = 'whatever';
 })()
-// first console: undefined
+// ask yourself what the consoles will return 
+// before you run 'javascripting run extra-credit-hoisting.js'
+//
+// first console:
 // second console: 
 // third console:  

@@ -1,6 +1,8 @@
 // exercise 5 filtered ls
 // 
 // references:
+// using Array.prototype.reduce():
+// https://danmartensen.svbtle.com/javascripts-map-reduce-and-filter
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
 // http://stackoverflow.com/a/7052830/3566042
 //
@@ -36,14 +38,26 @@ fs.readdir(pathToProcess, function (err, list) {
         console.log(err);
         return err;
     }
-    list.filter(function evaluateMatch(item) {
-        return regularExpressionPattern.test(item);
-    })
-        .map(function logEachPositive(item) {
+    list.reduce(function (prev, item) {
+        if (regularExpressionPattern.test(item) === true) {
             console.log(item);
-        });
+        }
+    }, []);
 
 });
 
+//  # PASS Your solution to FILTERED LS passed!
+//
+//  Here's the official solution in case you want to compare notes:
+//
+//     var fs = require('fs')
+//     var path = require('path')
+//
+//     fs.readdir(process.argv[2], function (err, list) {
+//       list.forEach(function (file) {
+//         if (path.extname(file) === '.' + process.argv[3])
+//           console.log(file)
+//       })
+//     })
 
 
