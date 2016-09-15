@@ -1,1 +1,14 @@
+# Ignoring OS files
 .DS_Store
+thumbs.db
+
+
+# Hide IDE files
+.idea
+
+
+# Misc Project Files
+node_modules
+npm-debug.log
+.sass-cache
+*.css.map
