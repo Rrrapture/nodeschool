@@ -1,0 +1,14 @@
+{
+  "name": "rrrapture-nodeschool-workshops",
+  "description": "Rrrapture's repo of Nodeschool workshops",
+  "version": "0.1.0",
+  "author": "Rachelle Gray (https://github.com/Rrrapture)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rrrapture/nodeschool"
+  },
+
+  "devDependencies": {
+    "concat-stream": "^1.5.2"
+  }
+}
