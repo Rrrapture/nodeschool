@@ -5,42 +5,56 @@
 var
     concat,
     http,
-    urls;
+    urls,
+    dataChunk,
+    counterLimit;
 
 concat = require('concat-stream');
 http = require('http');
 urls = [process.argv[2], process.argv[3], process.argv[4]];
+dataChunk = [];
+counterLimit = 0;
 
-console.log(urls);
 
 // test urls:
 // http://nodeschool.io/ http://bltcommunications.com/ http://rrrapture.com/
 // have to count callbacks
 urls.forEach(pipeData);
 
-
 function pipeData(url) {
+
     http.get(url, function getRequest(res) {
             var result,
+                urlsIndex,
                 write;
-            console.log(`STATUS: ${res.statusCode}`);
+
+            //console.log("counterLimit at beginning is " + counterLimit);
+            //console.log("this url is index " + urls.indexOf(url));
+
+            urlsIndex = urls.indexOf(url);
+
+            counterLimit ++;
 
             write = concat(function (data) {
                 result = data.toString();
-                console.log(url);
-                console.log(result.length);
-                // console.log(result);
+                //push to the correct index in the result array
+                dataChunk.splice(urlsIndex, 0, result);
+
             });
 
-            // res
-            //     .pipe(write);
-            res.on('data', function (chunk) {
-                console.log(chunk.toString().length);
-            });
+            res
+                .pipe(write);
 
-  // res.on('data', (chunk) => {
-  //   console.log(`BODY: ${chunk}`);
-  // });
+            res
+                .on('end', function () {
+                    //console.log("counterLimit, urls.length are " + counterLimit + ", " + urls.length );
+                    if (counterLimit === urls.length) {
+                        for (var i = 0; i < dataChunk.length; i++) {
+                            console.log(dataChunk[i]);
+                        }
+                    }
+                });
+
 
         })
         .on('error', function (err) {
