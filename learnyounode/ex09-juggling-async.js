@@ -25,26 +25,22 @@ function pipeData(url) {
 
     http.get(url, function getRequest(res) {
             var result,
-                urlsIndex,
-                write;
+                urlsIndex;
 
             urlsIndex = urls.indexOf(url);
 
-            write = concat(function (data) {
-                result = data.toString();
-                counterLimit ++;
-                dataChunk[urlsIndex] = result;
-
-                if (counterLimit === urls.length) {
-                    for (var i = 0; i < dataChunk.length; i++) {
-                        console.log(dataChunk[i]);
-                    }
-                }
-
-            });
-
             res
-                .pipe(write);
+                .pipe(concat(function (data) {
+                    result = data.toString();
+                    counterLimit ++;
+                    dataChunk[urlsIndex] = result;
+
+                    if (counterLimit === urls.length) {
+                        for (var i = 0; i < dataChunk.length; i++) {
+                            console.log(dataChunk[i]);
+                        }
+                    }
+                }));
 
         })
         .on('error', function (err) {
