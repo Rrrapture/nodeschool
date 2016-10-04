@@ -28,33 +28,23 @@ function pipeData(url) {
                 urlsIndex,
                 write;
 
-            //console.log("counterLimit at beginning is " + counterLimit);
-            //console.log("this url is index " + urls.indexOf(url));
-
             urlsIndex = urls.indexOf(url);
-
-            counterLimit ++;
 
             write = concat(function (data) {
                 result = data.toString();
-                //push to the correct index in the result array
-                dataChunk.splice(urlsIndex, 0, result);
+                counterLimit ++;
+                dataChunk[urlsIndex] = result;
+
+                if (counterLimit === urls.length) {
+                    for (var i = 0; i < dataChunk.length; i++) {
+                        console.log(dataChunk[i]);
+                    }
+                }
 
             });
 
             res
                 .pipe(write);
-
-            res
-                .on('end', function () {
-                    //console.log("counterLimit, urls.length are " + counterLimit + ", " + urls.length );
-                    if (counterLimit === urls.length) {
-                        for (var i = 0; i < dataChunk.length; i++) {
-                            console.log(dataChunk[i]);
-                        }
-                    }
-                });
-
 
         })
         .on('error', function (err) {
